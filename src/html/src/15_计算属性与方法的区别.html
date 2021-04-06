@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计算属性和方法的区别</title>
+</head>
+<body>
+
+<!--
+计算属性和方法的区别：
+    方法的话，是不会进行缓存的，没调用一次就会执行一次；而计算属性是基于他们的依赖进行缓存的。多次调用同一个函数的时候，只会调用一次
+-->
+<div id="app">
+    <span>{{methodReversString()}}</span>
+    <div>{{methodReversString()}}</div>
+    <br>
+    <span>{{computedReversString}}</span>
+    <div>{{computedReversString}}</div>
+    <br>
+    <button @click="change">改变</button>
+</div>
+
+<script src="../js/vue.js"></script>
+<script type="text/javascript">
+
+    new Vue({
+        el: "#app",
+        data: {
+            msg: "123456"
+        },
+        methods: {
+            /**
+             * methods方法没调用一次就会执行一次
+             */
+            methodReversString: function () {
+                console.log("methods reversString")
+                return this.msg.split('').reverse().join(",")
+            },
+            change: function () {
+                this.msg = "yang1234"
+            }
+        },
+        computed: {
+            /**
+             * 多次修改同一个值的时候，computed计算属性的方法只会执行一次
+             * @returns {string}
+             */
+            computedReversString: function () {
+                console.log("computed reversString")
+                return this.msg.split('').reverse().join(",")
+            }
+        }
+    })
+</script>
+</body>
+</html>

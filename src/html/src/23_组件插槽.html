@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件插槽</title>
+</head>
+<body>
+<!--
+    组件的最大特性就是复用性，而用好插槽能大大提高组件的可复用能力
+-->
+<div id="app">
+    <slot-component>我是插入进来的值</slot-component>
+
+    <base-layout>
+        <template slot="header">
+            <p>标题</p>
+        </template>
+        <p>主要内容</p>
+        <template slot="footer">
+            <p>底部</p>
+        </template>
+    </base-layout>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+    Vue.component("slot-component", {
+        template:
+            `
+        <div>
+            <strong>Error: </strong>
+            <slot>默认内容</slot>
+        </div>
+        `
+    })
+
+    // 自定义slot
+    Vue.component("base-layout", {
+        template:
+            `
+        <div>
+           <slot name="header"></slot>
+           <main>
+               <slot></slot>
+           </main>
+           <slot name="footer"></slot>
+        </div>
+        `
+    })
+    new Vue({
+        el: "#app"
+    })
+</script>
+
+</body>
+</html>

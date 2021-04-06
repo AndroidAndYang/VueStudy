@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>class绑定</title>
+    <style>
+        .class1 {
+            background: pink;
+        }
+
+        .class2 {
+            color: blue;
+        }
+
+        .margin-top {
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--
+        单对象写法：class中需要指定css属性名，并添加true和false来控制显示和隐藏
+            v-bind:class 设置一个对象,多个class使用逗号分割
+            实例中将 show 设置为 true 显示了一个pink色的div块，如果设置为 false 则不显示：
+     -->
+    <div v-bind:class="{class1:isShow,class2:isHide}">
+        单对象赋值
+    </div>
+
+    <!--  数组写法,class赋值需要指定vue的属性名，属性的具体值就是具体的css属性名  -->
+    <div v-bind:class="[class1,class2,margin_top]">
+        数组对象赋值
+    </div>
+
+    <!--
+       样式绑定相关语法细节：
+        1、对象绑定和数组绑定可以结合使用
+        2、class绑定的值可以简化操作
+        3、默认的class如何处理？默认的class会保留
+    -->
+
+    <div v-bind:class="[{class1:isShow},class2,margin_top]">
+        组合写法
+    </div>
+    <br>
+    <button @click="changeObject">单对象赋值切换</button>
+    <button @click="changeArray">数组赋值切换</button>
+
+    <script src="../js/vue.js"></script>
+    <script type="text/javascript">
+        new Vue({
+            el: "#app",
+            data: {
+                isShow: true,
+                isHide: true,
+                class1: "class1",
+                class2: "class2",
+                margin_top: "margin-top"
+            },
+            methods: {
+                changeObject: function () {
+                    this.isShow = !this.isShow;
+                    this.isHide = !this.isHide;
+                },
+                changeArray: function () {
+                    this.class1 = ''
+                    this.class2 = ''
+                }
+            }
+        })
+    </script>
+</body>
+</html>

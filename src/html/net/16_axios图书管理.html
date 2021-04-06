@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>axios图书管理</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <style>
+        body {
+            padding: 15px;
+        }
+
+        a {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">添加新图书</h3>
+        </div>
+        <div class="panel-body form-inline">
+            <div class="input-group">
+                <span class="input-group-addon">书名</span>
+                <input type="text" class="form-control" v-model="book_name" placeholder="请输入书名">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">作者</span>
+                <input type="text" class="form-control" v-model="book_author" placeholder="请输入作者">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">出版社</span>
+                <input type="text" class="form-control" v-model="book_pub" placeholder="请输入出版社">
+            </div>
+            <button type="button" class="btn btn-primary" @click.prevent="add()">添加</button>
+        </div>
+    </div>
+    <div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>书名</th>
+                <th>作者</th>
+                <th>出版社</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="book-list">
+            <tr :key='item.id' v-for="item in books">
+                <td>{{ item.id }}</td>
+                <td>{{ item.bookname }}</td>
+                <td>{{ item.author }}</td>
+                <td>{{ item.publisher }}</td>
+                <th><a href="javascript:;" @click="deleteBook(item.id)">删除</a></th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script src="../js/axios.js"></script>
+<script type="text/javascript">
+
+    axios.defaults.baseURL = 'http://www.liulongbin.top:3006/';
+    axios.interceptors.response.use(function (res) {
+        return res.data;
+    }, function (error) {
+        console.log(error)
+    });
+
+    new Vue({
+        el: "#app",
+        data: {
+            book_name: "",
+            book_author: "",
+            book_pub: "",
+            books: []
+        },
+        methods: {
+            add: async function () {
+                var that = this
+                await axios.post("api/addbook", {
+                    bookname: that.book_name,
+                    author: that.book_author,
+                    publisher: that.book_pub
+                }).then(function (ret) {
+                    console.log(ret)
+                    that.queryData()
+                })
+            },
+            deleteBook: async function (id) {
+                var that = this
+                await axios.get("api/delbook?id" + id, { // get请求传递参数
+                    // await axios.get("api/delbook", { // get请求传递参数
+                    params: {
+                        id: id
+                    }
+                }).then(function (ret) {
+                    console.log(ret)
+                    that.queryData()
+                })
+            },
+            // async作为一个关键字放到函数前面,任何一个async函数都会隐式返回一个promise
+            queryData: async function () {
+                // `await`关键字只能在使用`async`定义的函数中使用
+                // await后面可以直接跟一个 Promise实例对象
+                // await函数不能单独使用
+                // this.books = await
+                var that = this
+                await axios.get('api/getbooks').then(function (ret) {
+                    that.books = ret.data
+                })
+            }
+        },
+        mounted: function () {
+            this.queryData()
+        }
+    })
+</script>
+
+</body>
+</html>

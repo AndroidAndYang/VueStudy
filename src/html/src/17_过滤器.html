@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过滤器</title>
+</head>
+<body>
+
+<div id="app">
+    <input v-model="msg">
+    <br>
+    <span>{{msg|up}}</span>
+    <br>
+    <span>{{msg|low}}</span>
+    <br>
+    <span>{{msg|errorStr("b")}}</span>
+</div>
+
+<script src="../js/vue.js"></script>
+<script type="text/javascript">
+    <!-- 全局过滤器 -->
+    /**
+     * value 就是内容值
+     */
+    Vue.filter("up", function (value) {
+        return value.charAt(0).toUpperCase() + value.substring(1)
+    })
+    new Vue({
+        el: "#app",
+        data: {
+            msg: '',
+            lower: ''
+        },
+        watch: {
+            msg: function (val) {
+                if (val.search("b")) {
+                    this.msg = this.msg.replaceAll("b", '')
+                }
+            }
+        },
+        // 局部过滤器
+        filters: {
+            low: function (value) {
+                return value.charAt(0).toLowerCase() + value.substring(1)
+            },
+            /**
+             * 判断非法字符出现
+             * @param value 输入的值
+             * @param args 过滤器的参数
+             * @returns 过滤后的数值
+             */
+            errorStr: function (value, args) {
+                if (value.search(args) !== -1) {
+                    console.log(this.msg)
+                    value = this.msg
+                }
+                return value
+            }
+        }
+    })
+</script>
+</body>
+</html>

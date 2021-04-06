@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图书管理</title>
+    <style>
+        .box {
+            width: 500px;
+            margin: 0 auto;
+        }
+
+        .input_body {
+            background: yellow;
+            padding: 10px 0;
+            display: flex;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .input_body div {
+            flex: 1;
+            line-height: 1;
+        }
+
+        .input_body div:nth-child(1) {
+            padding-left: 10px;
+        }
+
+        .input_body button {
+            line-height: 1;
+            margin-right: 10px;
+        }
+
+        .list-view {
+            text-align: center;
+            width: 500px;
+        }
+
+        .tbody th, td {
+            border: 1px dashed orange;
+            height: 40px;
+            line-height: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: yellow;
+        }
+
+        thead tr {
+            height: 40px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app" class="box">
+    <div class="input_body">
+        <div>
+            <span>编号：</span>
+            <input placeholder="请输入编号" v-model="id" :disabled="flag"/>
+        </div>
+        <div>
+            <span>名称：</span>
+            <input placeholder="请输入名称" v-model="name"/>
+        </div>
+        <button @click="sublime">提交</button>
+    </div>
+
+    <div>
+        <span>图书总数</span><span>{{getLength}}</span>
+    </div>
+
+    <div class="list-view">
+        <table>
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>名称</th>
+                <th>时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr :key="index" v-for="(value,index) in book_list">
+                <td>{{value.id}}</td>
+                <td>{{value.name}}</td>
+                <td>{{value.time}}</td>
+                <td>
+                    <a href="javascript:;" @click="change(index)">修改</a>
+                    <a href="javascript:;" @click="remove(index)">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script type="text/javascript">
+
+    console.log(typeof Promise)
+
+    new Vue({
+        el: "#app",
+        data: {
+            id: '',
+            name: '',
+            flag: false,
+            index: 0,
+            length: 0,
+            book_list: []
+        },
+        computed: {
+            getLength:function () {
+                return this.book_list.length
+            }
+        },
+        methods: {
+            change: function (index) {
+                // 不能输入
+                this.flag = true
+                // 记录当前点击的索引
+                this.index = index;
+                let item = this.book_list[index];
+                this.id = item.id
+                this.name = item.name
+            },
+            remove: function (index) {
+                this.book_list.splice(index, 1)
+            },
+            sublime: function () {
+                if (this.flag) { // flag为true表示在修改
+                    // 修改值
+                    let item = this.book_list[this.index];
+                    item.id = this.id;
+                    item.name = this.name;
+                    // 能够输入
+                    this.flag = false
+                    // 滞空
+                    this.id = '';
+                    this.name = ''
+                } else { // 添加
+                    let item = {}
+                    item.id = this.id;
+                    item.name = this.name;
+                    item.time = '2021-04-02';
+                    this.book_list.push(item)
+                    // 滞空
+                    this.id = '';
+                    this.name = ''
+                }
+            }
+        },
+
+        mounted: function () { // 页面加载完了之后赋值
+            this.book_list = [{
+                id: "1",
+                name: "三国演义",
+                time: "2021-04-21"
+            }, {
+                id: "2",
+                name: "水浒传",
+                time: "2021-04-21"
+            }];
+        }
+    })
+</script>
+</body>
+
+</html>

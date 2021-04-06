@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>基础案例</title>
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tab ul {
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tab ul li:nth-child(1) {
+            border-left: 1px solid blue;
+        }
+
+        .tab ul li {
+            box-sizing: border-box;
+            padding: 0;
+            float: left;
+            width: 100px;
+            height: 45px;
+            line-height: 45px;
+            list-style: none;
+            text-align: center;
+            border-top: 1px solid blue;
+            border-right: 1px solid blue;
+            cursor: pointer;
+        }
+
+        .tab {
+            margin-left: 20px;
+        }
+
+        .tab ul li.active {
+            background-color: orange;
+        }
+
+        .tab div {
+            width: 500px;
+            height: 300px;
+            text-align: center;
+            font-size: 30px;
+            line-height: 300px;
+            border: 1px solid blue;
+            border-top: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div class="tab">
+        <ul>
+            <li v-for="data in datas" @click="select(data.id)" v-bind:class="{active:data.id===currentIndex}">
+                {{data.title}}
+            </li>
+        </ul>
+
+        <div>
+            <img class="img-box" v-bind:src="url">
+        </div>
+    </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script type="text/javascript">
+
+    new Vue({
+        el: "#app",
+        data: {
+            currentIndex: 0,
+            urls: ["img/apple.png", "img/orange.png", "img/lemon.png"],
+            url: "img/apple.png",
+            datas: [
+                {
+                    id: 0,
+                    title: "apple",
+                    img: "img/apple.png"
+                }, {
+                    id: 1,
+                    title: "orange",
+                    img: "img/orange.png"
+                }, {
+                    id: 2,
+                    title: "lemon",
+                    img: "img/lemon.png"
+                }
+            ]
+        },
+        methods: {
+            select: function (index) {
+                this.currentIndex = index
+                this.url = this.datas[index].img
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件之间传值</title>
+</head>
+<body>
+<div id="app">
+
+    <!--  静态传值  -->
+    <custom-component title="静态的标题" content="静态的内容"></custom-component>
+
+    <!--  父组件向子组件传动态值，使用:属性名，其中属性名需要在components中声明props数组定义  -->
+    <!--    需要动态的数据的时候 需要属性绑定的形式设置 此时 ptitle 来自父组件data 中的数据 . 传的值可以是数字、对象、数组等等-->
+    <custom-component :title="titles" :content="contents"></custom-component>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            titles: "火影忍者",
+            contents: "内容"
+        },
+        components: {
+            "custom-component": {
+                props: ["title", "content"],
+                template: "<div><span>{{title}}</span> ---- <span>{{content}}</span></div>"
+            }
+        }
+    })
+</script>
+</body>
+</html>

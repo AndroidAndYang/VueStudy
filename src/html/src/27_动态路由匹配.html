@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue动态路由匹配</title>
+</head>
+<body>
+<div id="app">
+    <!--  如果路由只是参数不一样，跳转可以使用动态路由 -->
+    <router-link to="/user/1">User1</router-link>
+    <router-link to="/user/2">User2</router-link>
+    <router-link to="/user/3">User3</router-link>
+    <router-view></router-view>
+</div>
+
+<script src="../js/vue.js"></script>
+<script src="../js/vue-router.js"></script>
+<script>
+
+    var User = {
+        // 如果路由没有开启props需要使用$route.params.参数名获取值，开启了使用props: ["id"],
+        template: "<h1>User --- {{ $route.params.id }}</h1>"
+    }
+
+    var route = new VueRouter({
+        routes: [
+            // 默认跳转 1
+            {path: "/", redirect:"/user/1"},
+            // 动态路由匹配，使用参数来拼接，并且路径参数以冒号开头，如果不使用props，组件接受参数需要使用 $route.params.参数名
+            // 如果 props 被设置为 true，route.params 将会被设置为组件属性
+            {path: "/user/:id", component: User},
+            // {path: "/user/:id", component: User, props: true},
+        ]
+    })
+
+    new Vue({
+        el: "#app",
+        router: route
+    })
+
+</script>
+</body>
+</html>

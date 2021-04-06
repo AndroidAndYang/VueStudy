@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>子组件向父组件传值</title>
+</head>
+<body>
+<div id="app">
+    <!--  父组件接受子组件传递过来的值，@后面的名称为子组件定义的事件名，使用$event来接受传递过来的值  -->
+    <custom-component @custom-click='receiverSon($event)'></custom-component>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        methods: {
+            receiverSon: function (params) {
+                console.log(params)
+            }
+        },
+        components: {
+            "custom-component": {
+                data: function () {
+                    return {
+                        counter: 0
+                    }
+                },
+                // 子组件向父组件传值，使用$emit，第一个参数为相应的事件名称，第二个参数为值。
+                template: `
+                  <div>
+                      <span>{{ counter }}</span>
+                      <button @click='handle'>点击</button>
+                      <button @click='$emit("custom-click",counter)'>子向父传值</button>
+                  </div>
+                `,
+                methods: {
+                    handle: function () {
+                        this.counter += 1
+                    }
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

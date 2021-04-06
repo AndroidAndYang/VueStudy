@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>侦听器</title>
+
+</head>
+<body>
+<!--
+    用于数据变化时执行异步或开销较大的操作
+-->
+
+<div id="app">
+    <input v-model.lazy="uname"> <span>{{tips}}</span><br>
+    <span v-foc='{color:"#ff0000"}'>sd</span>
+    <input v-wy>
+</div>
+
+<script src="../js/vue.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: "#app",
+        data: {
+            uname: "",
+            tips: ""
+        },
+        methods: {
+            /**
+             * 检查名称是否可用
+             */
+            checkName: function (val) {
+                // 调用接口，但是可以使用定时任务的方式模拟接口调用
+                var that = this;
+                setTimeout(function () {
+                    if (val === 'admin') {
+                        that.tips = "该名称已被占用"
+                        return
+                    }
+                    that.tips = "该名称可用"
+                }, 2000)
+            }
+        },
+        // 监听内容改变
+        watch: {
+            /**
+             * uname: 表示需要监听data里面的字段值
+             *
+             * 内容改变了回调该方法
+             * @param val 改变的值
+             */
+            uname: function (val) {
+                console.log(val)
+                this.checkName(val)
+            }
+        },
+        directives: {
+            foc: {
+                inserted: function (el, binding) {
+                    el.style.color = binding.value.color
+                }
+            },
+            wy: {
+                inserted: function (el) {
+                    console.log("wy")
+                    el.focus();
+                }
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

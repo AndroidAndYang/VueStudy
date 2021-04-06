@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue路由</title>
+</head>
+<body>
+
+<div id="app">
+    <router-link to="/user">User</router-link>
+    <router-link to="/register">Register</router-link>
+    <router-view></router-view>
+</div>
+
+<script src="../js/vue.js"></script>
+<script src="../js/vue-router.js"></script>
+<script>
+
+    // 打开vue的调试，在chrome中可以使用vue的调试工具
+    Vue.config.devtools = true;
+
+    // 定义路由组件
+    const User = {
+        template: "<h1>User</h1>"
+    }
+
+    // 定义路由组件
+    const Register = {
+        template: `<div>
+                      <h1>Register</h1>
+                      <hr>
+                      <router-link to="/register/tab1">Tab1</router-link>
+                      <router-link to="/register/tab2">Tab2</router-link>
+                      <router-view></router-view>
+                   </div>`
+    }
+
+    const Tab1 = {
+        template: `
+        <h1>Tab1</h1>
+        `
+    }
+
+    const Tab2 = {
+        template: `
+        <h1>Tab2</h1>
+        `
+    }
+
+    // 创建路由实例对象
+    var my_router = new VueRouter({
+        routes: [
+            // 每个路由规则都是一个配置对象，其中至少包含 path 和 component 两个属性：
+            // path 表示当前路由规则匹配的 hash 地址
+            // component 表示当前路由规则对应要展示的组件
+            // redirect: 路由重定向， 表示将要被重定向到的新地址(是地址，不是组件名)
+            {path: "/", redirect: "/user"},
+            {path: "/user", component: User},
+            {
+                path: "/register",
+                component: Register,
+                redirect: "/register/tab1",
+                // children 表示是嵌套路由
+                children: [
+                    {path: "/register/tab1", component: Tab1},
+                    {path: "/register/tab2", component: Tab2}
+                ]
+            }
+        ]
+    })
+
+    new Vue({
+        el: "#app",
+        // 路由注册
+        router: my_router
+    })
+</script>
+</body>
+</html>

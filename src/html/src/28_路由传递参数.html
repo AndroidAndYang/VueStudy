@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue动态路由匹配</title>
+</head>
+<body>
+<div id="app">
+    <!--  如果路由只是参数不一样，跳转可以使用动态路由 -->
+    <router-link to="/user/1">User1</router-link>
+    <router-link to="/user/2">User2</router-link>
+    <router-link to="/user/3">User3</router-link>
+    <router-link to="/register">Register</router-link>
+
+
+    <router-view></router-view>
+</div>
+
+<script src="../js/vue.js"></script>
+<script src="../js/vue-router.js"></script>
+<script>
+
+    const User = {
+        props: ["name", "age", "sex"],
+        // 接受动态参数需要使用 $route.params.参数名
+        template: "<h1>User --- {{ $route.params.id }} ，name：{{ name }}</h1>"
+    }
+
+    const Register = {
+        props: ["name", "age", "sex"],
+        template: `
+          <h1>name：{{ name }} ，age: {{ age }} ，sex：{{ sex }}</h1>`
+    }
+
+    var route = new VueRouter({
+        routes: [
+            // 默认跳转 1
+            {path: "/", redirect: "/user/1"},
+            {
+                // props可以自定义传递的参数与数据
+                path: "/user/:id", component: User, props: {
+                    name: "yjz",
+                    age: 18,
+                    sex: "男",
+                }
+            },
+            {
+                path: "/register",
+                component: Register,
+                // 在路由中传递参数
+                props: {
+                    name: "yjz",
+                    age: 18,
+                    sex: "男"
+                }
+            }
+        ]
+    })
+
+    new Vue({
+        el: "#app",
+        router: route
+    })
+</script>
+</body>
+</html>

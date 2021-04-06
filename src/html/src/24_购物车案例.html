@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车案例</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #cccccc;
+        }
+
+        .content {
+            margin: 100px auto;
+            width: 300px;
+            background: white;
+        }
+
+        header {
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+
+        main .item {
+            position: relative;
+            height: 55px;
+            width: 100%;
+            line-height: 55px;
+            border-bottom: #ADD8E6 1px solid;
+        }
+
+        main .item .left {
+            margin-left: 5px;
+            display: inline-block;
+            height: 55px;
+            line-height: 55px;
+        }
+
+        main .item .left img {
+            width: 45px;
+            vertical-align: middle;
+            height: 45px;
+        }
+
+        main .item .change {
+            position: absolute;
+            width: 100px;
+            top: 0;
+            right: 50px;
+        }
+
+        main .item .change a {
+            font-size: 20px;
+            width: 30px;
+            text-decoration: none;
+            background-color: lightgray;
+            vertical-align: middle;
+        }
+
+        input {
+            width: 40px;
+            height: 25px;
+        }
+
+        main .item .del {
+            width: 40px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: #DC4C40;
+        }
+
+        footer {
+            background: white;
+            text-align: right;
+        }
+
+        .total {
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .total button {
+            margin: 0 10px;
+            background-color: #DC4C40;
+            height: 35px;
+            width: 80px;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="content">
+        <header-component :title="title"></header-component>
+        <main>
+            <content-component :car_list="car_list"
+                               @add="addHandle($event)"
+                               @sub="subHandle($event)"
+                               @del="delHandle($event)">
+            </content-component>
+        </main>
+        <footer>
+            <footer-component :total="total()"></footer-component>
+        </footer>
+    </div>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+    // 头部
+    Vue.component("header-component", {
+        props: ["title"],
+        template: `
+          <header>{{ title }}</header>`
+    })
+    // 内容
+    Vue.component("content-component", {
+        props: ["car_list"],
+        template: `
+          <div>
+          <div :key='item.id' v-for='item in car_list' class="item">
+            <div class="left">
+              <img :src="item.img"/>
+              <span class="name">{{ item.name }}</span>
+            </div>
+            <div class="change">
+              <a href="" @click.prevent="$emit('sub',item)">－</a>
+              <input type="text" class="num" :value="item.num"/>
+              <a href="" @click.prevent="$emit('add',item)">＋</a>
+            </div>
+            <div class="del" @click="$emit('del',item)">X</div>
+          </div>
+          </div>`
+    })
+    // 底部
+    Vue.component("footer-component", {
+        props: ["total"],
+        template: `
+          <div class="total">
+          <span>总价：{{ total }}</span>
+          <button>结算</button>
+          </div>`
+    })
+
+    new Vue({
+        el: "#app",
+        data: {
+            title: "动态title",
+            car_list: [{
+                id: 1,
+                name: 'TCL彩电',
+                price: 1000,
+                num: 1,
+                img: 'img/a.jpg'
+            }, {
+                id: 2,
+                name: '机顶盒',
+                price: 1000,
+                num: 1,
+                img: 'img/b.jpg'
+            }, {
+                id: 3,
+                name: '海尔冰箱',
+                price: 1000,
+                num: 1,
+                img: 'img/c.jpg'
+            }, {
+                id: 4,
+                name: '小米手机',
+                price: 1000,
+                num: 1,
+                img: 'img/d.jpg'
+            }, {
+                id: 5,
+                name: 'PPTV电视',
+                price: 1000,
+                num: 2,
+                img: 'img/e.jpg'
+            }],
+        },
+        methods: {
+            total: function () {
+                return this.resolveTotal
+            },
+            subHandle: function (item) {
+                if (item.num === 1) {
+                    return
+                }
+                item.num -= 1;
+            },
+            addHandle: function (item) {
+                let num = item.num;
+                item.num = num + 1
+            },
+            delHandle: function (val) {
+                var index = this.car_list.findIndex(item => {
+                    return item.id == val.id;
+                });
+                this.car_list.splice(index, 1)
+            }
+        },
+        computed: {
+            resolveTotal: function () {
+                var price = 0
+                this.car_list.forEach(item => {
+                    price += item.num * item.price
+                })
+                return price
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue路由导航</title>
+</head>
+<body>
+
+<div id="app">
+    <router-link to="/user">User</router-link>
+    <router-link to="/register">Register</router-link>
+    <router-view></router-view>
+</div>
+
+<script src="../js/vue.js"></script>
+<script src="../js/vue-router.js"></script>
+<script>
+
+    // 定义路由组件
+    const User = {
+        template: `
+          <div>
+          <h1>User</h1>
+          <button @click="register()">跳转到注册页面</button>
+          </div>
+        `, methods: {
+            register() {
+                // 替代 location.href ,跳到注册页面
+                this.$router.push({path: "/register"})
+            }
+        }
+    }
+
+    // 定义路由组件
+    const Register = {
+        props:["userId"],
+        template: `
+          <div>
+          <button @click="goBack()">后退</button>
+          <h1>Register</h1>
+          <hr>
+          <router-link to="/register/tab1">Tab1</router-link>
+          <router-link to="/register/tab2">Tab2</router-link>
+          <router-view></router-view>
+          </div>`,
+        methods: {
+            goBack() {
+                // 后退
+                this.$router.go(-1)
+            }
+        }
+    }
+
+    const Tab1 = {
+        template: `
+        <h1>Tab1</h1>
+        `
+    }
+
+    const Tab2 = {
+        template: `
+        <h1>Tab2</h1>
+        `
+    }
+    // 创建路由实例对象
+    var my_router = new VueRouter({
+        routes: [
+            // 每个路由规则都是一个配置对象，其中至少包含 path 和 component 两个属性：
+            // path 表示当前路由规则匹配的 hash 地址
+            // component 表示当前路由规则对应要展示的组件
+            // redirect: 路由重定向， 表示将要被重定向到的新地址(是地址，不是组件名)
+            {path: "/", redirect: "/user"},
+            {path: "/user", component: User},
+            {
+                path: "/register",
+                component: Register,
+                redirect: "/register/tab1",
+                // children 表示是嵌套路由
+                children: [
+                    {path: "/register/tab1", component: Tab1},
+                    {path: "/register/tab2", component: Tab2}
+                ]
+            }
+        ]
+    })
+
+    new Vue({
+        el: "#app",
+        router: my_router
+    })
+</script>
+</body>
+</html>

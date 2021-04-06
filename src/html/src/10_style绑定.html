@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>style绑定</title>
+</head>
+<body>
+
+<div id="app">
+    <!-- 单对象写法 -->
+    <div v-bind:style="{color:activeColor,background:activeBg,height:activeHeight}">
+        123
+    </div>
+    <!-- 数组写法 -->
+    <div v-bind:style="[activeStyle, errorStyle]">234</div>
+</div>
+
+<script src="../js/vue.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: "#app",
+        data: {
+            activeColor: "#ff0000",
+            activeHeight: "200px",
+            activeBg: "#00ff00",
+            activeStyle: {
+                color: "#00ff00",
+                marginTop: "20px",
+                height: "300px"
+            },
+            errorStyle: {
+                background: "#ff0000"
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>事件修饰符</title>
+    <style>
+        .box {
+            width: 200px;
+            height: 200px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <span>{{num}}</span>
+    <div class="box" v-on:click="handle">
+        <!--  使用stop用于防止元素冒泡，不然会冒泡到div父元素上  -->
+        <button v-on:click.stop="num++">阻止冒泡</button>
+        <form name="">
+            <input v-on:click.stop><br>
+            <input v-on:click.stop><br>
+            <!--  使用prevent用于防止元素的默认行为  -->
+            <button type="reset" v-on:click.prevent="reset">重置</button>
+        </form>
+
+    </div>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            num: 0
+        },
+        methods: {
+            handle: function () {
+                alert("handle")
+            },
+            reset: function () {
+                alert("reset")
+            }
+        }
+    })
+</script>
+</body>
+</html>

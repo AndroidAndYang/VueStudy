@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue HelloWorld</title>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <p>姓名：{{name}}</p>
+    <p>性别：{{sex}}</p>
+    <p>年龄：{{age}}</p>
+    <p>介绍：{{details()}}</p>
+</div>
+
+<script src="../js/vue.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            name: 'YJZ',
+            sex: '男',
+            age: '4岁'
+        },
+        methods: {
+            details: function () {
+                return "我的名字是：" + this.name + "，年龄：" + this.age + "，性别：" + this.sex;
+            }
+        }
+    })
+</script>
+</body>
+</html>

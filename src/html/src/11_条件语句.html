@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分支结构</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <input placeholder="请输入成绩，查看评价" type="number" v-model="score">
+    <div v-if="score>=90">非常棒</div>
+    <div v-if="score>=80 && score<90">优秀</div>
+    <div v-if="score>=70 && score<80">良好</div>
+    <div v-if="score>=60 && score<70">一般</div>
+    <div v-if="score<60">非常差</div>
+    <!--
+        v-show 和 v-if 的区别
+            v-if控制元素是否渲染到页面
+            v-show控制元素是否显示（已经渲染到了页面）
+    -->
+    <div v-show="isShow">动态显示隐藏</div>
+    <button @click="change">切换显示</button>
+</div>
+
+<script src="../js/vue.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: "#app",
+        data: {
+            score: 80,
+            isShow: true
+        },
+        methods: {
+            change: function () {
+                this.isShow = !this.isShow;
+            }
+        }
+    })
+</script>
+</body>
+</html>

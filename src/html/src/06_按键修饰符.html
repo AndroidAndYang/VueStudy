@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>按键修饰符</title>
+</head>
+<body>
+<div id="app">
+    <form>
+        <!--监听delete按键-->
+        用户名：<input v-on:keyup.delete="nameDelete" v-model="name" placeholder="请输入用户名"><br>
+        <!--监听空格按键-->
+        密码：<input v-model="pwd" v-on:keyup.space="pwdInput" placeholder="请输入密码"><br>
+        <!--prevent阻止默认行为-->
+        <button v-on:click.prevent="submit">提交</button>
+    </form>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            name: "",
+            pwd: ""
+        },
+        methods: {
+            nameDelete: function () {
+                // 清空name
+                this.name = ''
+            },
+            pwdInput: function () {
+                let pwd = this.pwd
+                this.pwd = pwd.substring(0, pwd.length - 1)
+                alert("输入不和法")
+            },
+            submit: function () {
+                alert("name = " + this.name + ", pwd = " + this.pwd)
+            }
+        }
+    })
+</script>
+</body>
+</html>

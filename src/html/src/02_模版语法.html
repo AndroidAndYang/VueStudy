@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue模版语法</title>
+</head>
+<body>
+
+<div id="app">
+    <!--
+        数据绑定指令：
+            1.使用v-html加载来加载html内容
+            2.使用v-text来加载纯文本内容,v-text不会对html标签进行解析
+            3.v-prev只会加载原始文本，不会解析vue的语法
+         v-once：如果数据只加载一次，则可以使用 v-once 可以提高性能
+     -->
+    <p v-html="template"></p>
+    <p v-text="template1"></p>
+    <p v-pre>{{template}}</p>
+    <p v-once>{{template2}}</p>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            template: '<h1>模版渲染</h1>',
+            template1: "<h1>模版渲染</h1>",
+            template2: "只加载一次可以使用v-once，可以提高性能"
+        }
+    })
+</script>
+</body>
+</html>

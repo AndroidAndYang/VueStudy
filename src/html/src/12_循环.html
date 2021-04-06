@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>循环</title>
+</head>
+<body>
+
+<div id="app">
+    <!--  数组迭代  -->
+    <ul>
+        <li v-for="site in sites">{{site}}</li>
+    </ul>
+    <!--  数组迭代带索引号  -->
+    <ul>
+        <!--  第一个参数是值，第二个参数是索引  -->
+        <li v-for="(value,index) in sites">{{index}} ---- {{value}}</li>
+    </ul>
+
+    <!-- 对象遍历 -->
+    <ul>
+        <!--  第一个参数是值，第二个参数是索引  -->
+        <li v-for="(value,index) in object">{{index}} ---- {{value}}</li>
+    </ul>
+
+    <ul>
+        <li v-for="(value, key, index) in object">
+            {{ index }}. {{ key }} : {{ value }}
+        </li>
+    </ul>
+
+</div>
+
+<script src="../js/vue.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: "#app",
+        data: {
+            sites: ["yjz", "wy", "lnx"],
+            object: {
+                name: "yjz",
+                sex: "男",
+                age: 25
+            }
+        }
+    })
+</script>
+</body>
+</html>

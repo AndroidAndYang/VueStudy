@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>事件绑定</title>
+</head>
+<body>
+<div id="app">
+    <p>{{num}}</p>
+    <button v-on:click='num++'>使用v-on:click</button>
+    <button @click="num++">使用@click(v-on简写)</button>
+    <!--  调用函数，直接调用不能获取event ，需要传递参数 -->
+    <button @click="add($event)">绑定函数</button>
+    <!--  直接绑定函数名称  -->
+    <button @click="add">绑定函数可以省略括号</button>
+
+    <button v-on:click="sum(1,2)">事件传递参数(1 + 2)</button>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            num: 0
+        },
+        methods: {
+            add: function (event) {
+                console.log(event.target.innerHTML)
+                this.num = this.num + 1;
+            },
+            sum: function (p1, p2) {
+                alert(p1 + p2)
+            }
+        }
+    })
+</script>
+</body>
+</html>

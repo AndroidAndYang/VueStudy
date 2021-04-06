@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>命名路由</title>
+</head>
+<body>
+
+<div id="app">
+    <!--  命名路由使用:to，对象中name是指向VueRouter中声明的name  -->
+    <router-link :to="{name:'user'}">User</router-link>
+    <router-link to="/register">Register</router-link>
+    <router-view></router-view>
+</div>
+
+<script src="../js/vue.js"></script>
+<script src="../js/vue-router.js"></script>
+<script>
+
+    const User = {
+        template: "<h1>User</h1>"
+    }
+
+    const Register = {
+        template: "<h1>Register</h1>"
+    }
+
+    var route = new VueRouter({
+        routes: [
+            {
+                path: "/", redirect: "/user"
+            },
+            {
+                name: "user",
+                path: "/user",
+                component: User
+            },
+            {
+                path: "/register",
+                component: Register
+            }
+        ]
+    })
+    new Vue({
+        el: "#app",
+        router: route
+    })
+
+</script>
+</body>
+</html>

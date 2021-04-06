@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义指令</title>
+    <style>
+    </style>
+</head>
+<body>
+
+<div id="app">
+
+    <!-- 全局指令   -->
+    <input v-focus>
+
+    <!-- 局部指令   -->
+    <input v-wy>
+
+    <!-- 自定义带参数指令：传入自己的值   -->
+    <span v-yjz='{color:"#ff0000"}'>
+        12
+    </span>
+    <!-- 自定义带参数指令：使用vue的参数值   -->
+    <span v-yjz='msg'>
+        12
+    </span>
+</div>
+
+<script src="../js/vue.js"></script>
+<script type="text/javascript">
+    // 注册或获取全局指令，对象中的方法是固定写法。
+    Vue.directive("yjz", {
+        /**
+         * 只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
+         */
+        // bind: function (el) {
+        //
+        // },
+        /**
+         * 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
+         *
+         * @param el 元素
+         * @param binding 参数值
+         */
+        inserted: function (el, binding) {
+            el.style.background = binding.value.color
+        }
+    })
+
+    // 自动获取焦点
+    Vue.directive("focus", {
+        /**
+         * 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
+         *
+         * @param el 元素
+         */
+        inserted: function (el) {
+            el.focus();
+        }
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            msg: {
+                color: 'blue'
+            }
+        },
+        // 自定义局部指令
+        directives: {
+            wy: {
+                inserted: function (el) {
+                    el.focus()
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
